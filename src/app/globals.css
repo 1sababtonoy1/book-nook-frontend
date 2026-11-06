@@ -1,26 +1,68 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-fraunces);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-navbar: var(--navbar);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.5rem;
+  --background: #faf6ef;
+  --foreground: #2a1d12;
+  --card: #ffffff;
+  --card-foreground: #2a1d12;
+  --popover: #ffffff;
+  --popover-foreground: #2a1d12;
+  --primary: #2b5240;
+  --primary-foreground: #ffffff;
+  --secondary: #f1ebe0;
+  --secondary-foreground: #2a1d12;
+  --muted: #f1ebe0;
+  --muted-foreground: #6f665c;
+  --accent: #e9e1d2;
+  --accent-foreground: #2b5240;
+  --destructive: #dc2626;
+  --border: #e5ddd0;
+  --input: #e5ddd0;
+  --ring: #2b5240;
+  --brand: #c8754a;
+  --navbar: #faf6ef;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
 }
