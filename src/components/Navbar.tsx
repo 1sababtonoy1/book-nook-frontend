@@ -54,15 +54,15 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b border-border bg-navbar">
+    <header className="border-b border-[#8f2d30]/50 bg-gradient-to-r from-[#4a1214] via-[#5e1719] to-[#4a1214] text-[#f8efe4] shadow-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-12">
         {/* Logo + links */}
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-lg bg-primary text-primary-foreground">
+            <span className="grid size-10 place-items-center rounded-lg bg-[#f3e3cf] text-[#4a1214]">
               <BookOpen className="size-5" />
             </span>
-            <span className="font-serif text-[28px] font-semibold tracking-tight">
+            <span className="font-serif text-[28px] font-semibold tracking-tight text-[#f8efe4]">
               BookNook
             </span>
           </Link>
@@ -73,8 +73,10 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 className={cn(
-                  "text-[15px] font-medium transition-colors hover:text-primary",
-                  pathname === l.href ? "text-primary" : "text-muted-foreground"
+                  "border-b-2 py-1 text-[15px] font-medium transition-colors hover:text-white",
+                  pathname === l.href
+                    ? "border-[#e8b86d] text-white"
+                    : "border-transparent text-[#f8efe4]/70"
                 )}
               >
                 {l.label}
@@ -87,16 +89,16 @@ export default function Navbar() {
         <div className="flex h-10 items-center gap-2">
           {isPending ? (
             // Placeholder while the session loads, so the buttons don't flash.
-            <div className="size-10 animate-pulse rounded-full bg-muted" />
+            <div className="size-10 animate-pulse rounded-full bg-white/20" />
           ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger
                 aria-label="Open user menu"
-                className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#e8b86d] focus-visible:ring-offset-2 focus-visible:ring-offset-[#4a1214]"
               >
-                <Avatar className="size-10">
+                <Avatar className="size-10 ring-2 ring-[#e8b86d]/60">
                   <AvatarImage src={user.image ?? undefined} alt={user.name} />
-                  <AvatarFallback className="bg-primary font-semibold text-primary-foreground">
+                  <AvatarFallback className="bg-[#f3e3cf] font-semibold text-[#4a1214]">
                     {initial}
                   </AvatarFallback>
                 </Avatar>
@@ -126,7 +128,7 @@ export default function Navbar() {
                 href="/login"
                 className={cn(
                   buttonVariants({ variant: "outline" }),
-                  "h-10 px-4 text-[15px] font-medium"
+                  "h-10 border-[#f8efe4]/40 bg-transparent px-4 text-[15px] font-medium text-[#f8efe4] hover:bg-white/10 hover:text-white"
                 )}
               >
                 Login
@@ -135,7 +137,7 @@ export default function Navbar() {
                 href="/register"
                 className={cn(
                   buttonVariants(),
-                  "h-10 px-4 text-[15px] font-medium"
+                  "h-10 bg-[#f3e3cf] px-4 text-[15px] font-medium text-[#4a1214] hover:bg-[#fff3e2]"
                 )}
               >
                 Register
