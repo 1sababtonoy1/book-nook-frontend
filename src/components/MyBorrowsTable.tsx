@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { authFetch } from "@/lib/client-api";
+import { PageLoader } from "./spinner";
 
 type Borrow = {
   _id: string;
@@ -101,9 +102,7 @@ export default function MyBorrowsTable() {
     }
   };
 
-  if (isPending) {
-    return <p className="py-16 text-center text-[#aaa99e]">Loading…</p>;
-  }
+  if (isPending) return <PageLoader />;
 
   if (!email) {
     return (
@@ -121,9 +120,7 @@ export default function MyBorrowsTable() {
     );
   }
 
-  if (loading) {
-    return <p className="py-16 text-center text-[#aaa99e]">Loading your borrows…</p>;
-  }
+   if (loading) return <PageLoader label="Loading your borrows…" />;
 
   return (
     <>
