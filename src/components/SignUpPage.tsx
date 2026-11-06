@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,7 +47,6 @@ const SignUpPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const busy = isSubmitting || isGoogleLoading;
 
@@ -57,7 +57,6 @@ const SignUpPage = () => {
   const handleEmailSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
-    setMessage("");
 
     try {
       // Better Auth returns errors instead of throwing them.
@@ -69,15 +68,16 @@ const SignUpPage = () => {
       });
 
       if (error) {
-        setMessage(error.message || "Could not create your account.");
+        toast.error(error.message || "Could not create your account.");
         return;
       }
 
       // Account created (and signed in) → go to the home page.
+      toast.success("Account created successfully. Welcome to BookNook!");
       router.push("/");
       router.refresh();
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsSubmitting(false);
     }
@@ -85,7 +85,6 @@ const SignUpPage = () => {
 
   const handleGoogle = async () => {
     setIsGoogleLoading(true);
-    setMessage("");
 
     try {
       // Google handles both sign-up and sign-in: new users get an account
@@ -98,11 +97,11 @@ const SignUpPage = () => {
 
       // On success the browser leaves for Google, so this only runs on failure.
       if (error) {
-        setMessage(error.message || "Could not continue with Google.");
+        toast.error(error.message || "Could not continue with Google.");
         setIsGoogleLoading(false);
       }
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
       setIsGoogleLoading(false);
     }
   };
@@ -185,12 +184,6 @@ const SignUpPage = () => {
           >
             {isSubmitting ? "Registering…" : "Register"}
           </Button>
-
-          {message && (
-            <p role="alert" className="text-center text-sm text-[#f08a8a]">
-              {message}
-            </p>
-          )}
         </form>
 
         {/* Divider */}

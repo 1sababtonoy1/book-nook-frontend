@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { PackageCheck, Plus } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -59,7 +60,6 @@ export default function AddBookDialog({
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState("");
 
   const update = (field: keyof typeof emptyForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -69,7 +69,6 @@ export default function AddBookDialog({
   const handleOpenChange = (next: boolean) => {
     if (next) {
       setForm(emptyForm);
-      setError("");
     }
     setOpen(next);
   };
@@ -78,12 +77,11 @@ export default function AddBookDialog({
     event.preventDefault();
 
     if (!form.category) {
-      setError("Please choose a category.");
+      toast.error("Please choose a category.");
       return;
     }
 
     setIsSaving(true);
-    setError("");
 
     try {
       const payload = { ...form, copies: Number(form.copies) };
@@ -106,9 +104,11 @@ export default function AddBookDialog({
         userName: user?.name,
         userEmail: user?.email,
       });
+
+      toast.success(`"${form.title}" added to the library.`);
       setOpen(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsSaving(false);
     }
@@ -236,12 +236,6 @@ export default function AddBookDialog({
               />
             </div>
           </div>
-
-          {error && (
-            <p role="alert" className="text-sm text-[#f08a8a]">
-              {error}
-            </p>
-          )}
 
           <Button
             type="submit"

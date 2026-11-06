@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -33,7 +34,6 @@ export default function BorrowDialog({ book }: { book: Book }) {
 
   const [open, setOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState("");
 
   const available = (Number(book.copies) || 0) > 0;
 
@@ -62,15 +62,9 @@ export default function BorrowDialog({ book }: { book: Book }) {
     );
   }
 
-  const handleOpenChange = (next: boolean) => {
-    if (next) setError("");
-    setOpen(next);
-  };
-
   const handleConfirm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSaving(true);
-    setError("");
 
     try {
       // The server takes your name and email from your login token.
@@ -83,17 +77,22 @@ export default function BorrowDialog({ book }: { book: Book }) {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "Could not borrow the book.");
 
+      toast.success(
+        `"${book.title}" borrowed successfully. Enjoy reading for ${BORROW_DAYS} days!`
+      );
       setOpen(false);
       router.push("/my-borrows");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong."
+      );
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className={cn(buttonVariants(), triggerClass)}>
         Borrow this book
       </DialogTrigger>
@@ -128,12 +127,6 @@ export default function BorrowDialog({ book }: { book: Book }) {
               className={fieldClass}
             />
           </div>
-
-          {error && (
-            <p role="alert" className="text-sm text-[#f08a8a]">
-              {error}
-            </p>
-          )}
 
           <div className="flex justify-end border-t border-[#303a34] pt-4">
             <Button

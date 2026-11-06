@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, LogOut, Library } from "lucide-react";
+import { BookOpen, LogOut, User } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -112,8 +112,8 @@ export default function Navbar() {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem onClick={() => router.push("/my-books")}>
-                  <Library className="size-4" /> My Books
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="size-4" /> My Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="size-4" /> Logout

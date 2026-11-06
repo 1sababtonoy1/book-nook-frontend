@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import toast from "react-hot-toast";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -57,7 +58,6 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(() => formFromBook(book));
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState("");
 
   // Keep the book's current category selectable even if it isn't in the list.
   const categoryOptions =
@@ -73,7 +73,6 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
   const handleOpenChange = (next: boolean) => {
     if (next) {
       setForm(formFromBook(book));
-      setError("");
     }
     setOpen(next);
   };
@@ -81,7 +80,6 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSaving(true);
-    setError("");
 
     try {
       const payload = { ...form, copies: Number(form.copies) };
@@ -97,9 +95,11 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
 
       const saved = data?.book ?? data;
       onSaved(saved && saved._id ? { ...book, ...saved } : { ...book, ...payload });
+
+      toast.success(`"${form.title}" updated successfully.`);
       setOpen(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsSaving(false);
     }
@@ -229,12 +229,6 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
               />
             </div>
           </div>
-
-          {error && (
-            <p role="alert" className="text-sm text-[#f08a8a]">
-              {error}
-            </p>
-          )}
 
           <Button
             type="submit"

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
@@ -53,7 +54,6 @@ export default function MyBorrowsTable() {
 
   const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [returningId, setReturningId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -69,7 +69,10 @@ export default function MyBorrowsTable() {
         if (!cancelled) setBorrows(Array.isArray(data) ? data : []);
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Something went wrong.");
+          toast.error(
+            err instanceof Error ? err.message : "Something went wrong.",
+            { id: "borrows-load-error" }
+          );
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -84,14 +87,15 @@ export default function MyBorrowsTable() {
 
   const handleReturn = async (borrow: Borrow) => {
     setReturningId(borrow._id);
-    setError("");
 
     try {
       const res = await authFetch(`/borrow/${borrow._id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Could not return the book.");
+
       setBorrows((current) => current.filter((b) => b._id !== borrow._id));
+      toast.success(`"${borrow.title}" returned successfully. Thank you!`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setReturningId(null);
     }
@@ -123,12 +127,6 @@ export default function MyBorrowsTable() {
 
   return (
     <>
-      {error && (
-        <p role="alert" className="mb-4 text-sm text-[#f08a8a]">
-          {error}
-        </p>
-      )}
-
       {borrows.length === 0 ? (
         <div className="rounded-2xl border border-[#303a34] bg-[#121a16] px-6 py-16 text-center">
           <p className="text-lg text-[#aaa99e]">You haven’t borrowed any books yet.</p>
