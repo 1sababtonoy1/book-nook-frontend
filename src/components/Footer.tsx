@@ -11,7 +11,6 @@ export default function Footer() {
   return (
     <footer className="bg-[#19251f] text-[#eeeae0]">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 sm:px-10 md:grid-cols-3 md:gap-10 md:py-16">
-        {/* Brand */}
         <div>
           <Link href="/" className="inline-flex items-center gap-3">
             <span className="grid size-[60px] place-items-center rounded-xl bg-[#8fc99c] text-[#101713]">

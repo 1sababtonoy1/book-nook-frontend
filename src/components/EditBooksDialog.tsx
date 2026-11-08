@@ -59,7 +59,7 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
   const [form, setForm] = useState(() => formFromBook(book));
   const [isSaving, setIsSaving] = useState(false);
 
-  // Keep the book's current category selectable even if it isn't in the list.
+
   const categoryOptions =
     !form.category || categories.includes(form.category)
       ? categories
@@ -69,7 +69,7 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  // Start from the book's latest values every time the dialog opens.
+  
   const handleOpenChange = (next: boolean) => {
     if (next) {
       setForm(formFromBook(book));
@@ -207,7 +207,7 @@ const EditBooksDialog = ({ book, onSaved }: Props) => {
             />
           </div>
 
-          {/* The owner can't be changed, so these are display-only. */}
+          
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-2">
               <Label htmlFor={`userName-${book._id}`}>User Name</Label>
