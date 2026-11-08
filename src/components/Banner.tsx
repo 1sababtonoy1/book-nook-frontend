@@ -7,8 +7,7 @@ import Image from "next/image";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// To change the homepage hero, edit this list:
-// one object = one slide (image, small label, headline, text, button).
+
 const slides = [
   {
     image: "/images/hero/hero-1.jpg",
@@ -38,7 +37,7 @@ const SLIDE_MS = 6000;
 export default function Banner() {
   const [index, setIndex] = useState(0);
 
-  // Move to the next slide after a delay. Clicking a dot restarts the timer.
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIndex((i) => (i + 1) % slides.length);
@@ -66,7 +65,6 @@ export default function Banner() {
             className="object-cover"
           />
 
-          {/* Dark overlay, strongest on the left behind the text */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/10" />
 
           <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-6 lg:px-12">
