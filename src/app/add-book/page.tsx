@@ -202,7 +202,7 @@ export default function AddBookPage() {
               />
             </div>
 
-            {/* Filled from your login; the server uses the same details. */}
+            
             <div className="grid gap-2">
               <Label htmlFor="userName">User Name</Label>
               <Input

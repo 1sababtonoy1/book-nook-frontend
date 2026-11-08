@@ -7,7 +7,6 @@ const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db("book-nook");
 
 export const auth = betterAuth({
-  // Your deployed site URL, e.g. https://booknook.shahriyar.dev
   baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: [process.env.BETTER_AUTH_URL as string].filter(Boolean),
 
