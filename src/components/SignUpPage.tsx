@@ -59,7 +59,7 @@ const SignUpPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Better Auth returns errors instead of throwing them.
+
       const { error } = await authClient.signUp.email({
         name: form.name,
         email: form.email,
@@ -72,7 +72,7 @@ const SignUpPage = () => {
         return;
       }
 
-      // Account created (and signed in) → go to the home page.
+     
       toast.success("Account created successfully. Welcome to BookNook!");
       router.push("/");
       router.refresh();
@@ -87,15 +87,14 @@ const SignUpPage = () => {
     setIsGoogleLoading(true);
 
     try {
-      // Google handles both sign-up and sign-in: new users get an account
-      // automatically, returning users are just logged in.
+      
       const { error } = await authClient.signIn.social({
         provider: "google",
         callbackURL: "/",
         errorCallbackURL: "/register",
       });
 
-      // On success the browser leaves for Google, so this only runs on failure.
+      
       if (error) {
         toast.error(error.message || "Could not continue with Google.");
         setIsGoogleLoading(false);

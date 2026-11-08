@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
 
   if (!session?.user) {
     const loginUrl = new URL("/login", request.url);
-    // Lets the login page send the user back to where they were going.
+
     loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }

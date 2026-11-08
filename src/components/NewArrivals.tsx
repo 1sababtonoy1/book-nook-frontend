@@ -5,10 +5,10 @@ import BookCard from "@/components/BookCard";
 import type { Book } from "@/components/BookDetailsCard";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-const LIMIT = 10; // two rows of five on large screens
+const LIMIT = 10; 
 
 async function getLatestBooks(): Promise<{ books: Book[]; failed: boolean }> {
-  // Outside the try/catch on purpose, so Next.js can handle its own signals.
+ 
   await connection();
 
   try {
@@ -20,7 +20,7 @@ async function getLatestBooks(): Promise<{ books: Book[]; failed: boolean }> {
     const data = await res.json();
     const list: Book[] = Array.isArray(data) ? data : (data?.books ?? []);
 
-    // A MongoDB ObjectId begins with a timestamp, so newer books have a larger _id.
+    
     const latest = [...list]
       .sort((a, b) => b._id.localeCompare(a._id))
       .slice(0, LIMIT);

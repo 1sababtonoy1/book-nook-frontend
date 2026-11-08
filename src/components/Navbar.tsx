@@ -36,8 +36,7 @@ export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
-  // While the session is loading, only the public links show,
-  // so logged-out visitors never see member links flash on screen.
+
   const links = user ? [...publicLinks, ...memberLinks] : publicLinks;
 
   const initial = (user?.name || user?.email || "U").charAt(0).toUpperCase();
@@ -86,7 +85,7 @@ export default function Navbar() {
         {/* Auth area */}
         <div className="flex h-10 items-center gap-2">
           {isPending ? (
-            // Placeholder while the session loads, so the buttons don't flash.
+            
             <div className="size-10 animate-pulse rounded-full bg-white/10" />
           ) : user ? (
             <DropdownMenu>

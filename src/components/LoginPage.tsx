@@ -54,7 +54,7 @@ const LoginPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Better Auth returns errors instead of throwing them.
+
       const { error } = await authClient.signIn.email({
         email: form.email,
         password: form.password,
@@ -85,7 +85,6 @@ const LoginPage = () => {
         errorCallbackURL: "/login",
       });
 
-      // On success the browser leaves for Google, so this only runs on failure.
       if (error) {
         toast.error(error.message || "Could not continue with Google.");
         setIsGoogleLoading(false);
