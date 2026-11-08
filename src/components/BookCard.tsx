@@ -14,7 +14,6 @@ export default function BookCard({ book }: { book: Book }) {
 
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-[#303a34] bg-[#121a16] transition-colors hover:border-[#4a5a50]">
-      {/* Cover */}
       <div className="relative aspect-[3/4] w-full bg-[#1f2b25]">
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element

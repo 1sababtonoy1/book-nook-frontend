@@ -67,7 +67,7 @@ export default function BorrowDialog({ book }: { book: Book }) {
     setIsSaving(true);
 
     try {
-      // The server takes your name and email from your login token.
+      
       const res = await authFetch("/borrow", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

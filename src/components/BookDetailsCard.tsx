@@ -14,8 +14,6 @@ export type Book = {
   userEmail?: string;
 };
 
-// A MongoDB ObjectId starts with a creation timestamp, so we can show
-// "Added on ..." without needing a separate date field.
 function addedOn(id: string) {
   const seconds = parseInt(id.slice(0, 8), 16);
   if (Number.isNaN(seconds)) return null;
