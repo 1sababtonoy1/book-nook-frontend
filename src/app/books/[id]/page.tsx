@@ -22,7 +22,7 @@ async function getBook(
 
     const data = await response.json();
 
-    // Supports either a book object or { book: {...} }.
+
     const book = data?.book ?? data;
 
     return {
@@ -47,7 +47,6 @@ export default async function BookDetailsPage({
 
   const { book, unauthorized } = await getBook(id, token);
 
-  // redirect() and notFound() work by throwing, so they stay outside try/catch.
   if (unauthorized) redirect("/login");
   if (!book) notFound();
 
