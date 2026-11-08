@@ -52,7 +52,7 @@ const fieldClass = "h-12 border border-[#3a423d] bg-[#1b2420] text-[#eeeae0]";
 export default function AddBookDialog({
   onAdded,
 }: {
-  onAdded: (book: Book) => void;
+  onAdded?: (book: Book) => void;
 }) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
@@ -60,15 +60,17 @@ export default function AddBookDialog({
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const update = (field: keyof typeof emptyForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  // Start with a blank form every time the dialog opens.
+
   const handleOpenChange = (next: boolean) => {
     if (next) {
       setForm(emptyForm);
+      setError("");
     }
     setOpen(next);
   };
@@ -77,11 +79,12 @@ export default function AddBookDialog({
     event.preventDefault();
 
     if (!form.category) {
-      toast.error("Please choose a category.");
+      setError("Please choose a category.");
       return;
     }
 
     setIsSaving(true);
+    setError("");
 
     try {
       const payload = { ...form, copies: Number(form.copies) };
@@ -97,18 +100,20 @@ export default function AddBookDialog({
         throw new Error(data.message || "Could not add the book.");
       }
 
-      // The server only returns the new id, so build the book locally.
-      onAdded({
+      onAdded?.({
         ...payload,
         _id: String(data.insertedId),
         userName: user?.name,
         userEmail: user?.email,
       });
 
-      toast.success(`"${form.title}" added to the library.`);
       setOpen(false);
+      toast.success(`“${payload.title}” was added to the library.`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong.");
+      const message =
+        err instanceof Error ? err.message : "Something went wrong.";
+      setError(message);
+      toast.error(message);
     } finally {
       setIsSaving(false);
     }
@@ -164,7 +169,10 @@ export default function AddBookDialog({
                 value={form.category}
                 onValueChange={(value) => update("category", value ?? "")}
               >
-                <SelectTrigger id="add-category" className={`w-full ${fieldClass}`}>
+                <SelectTrigger
+                  id="add-category"
+                  className={`w-full ${fieldClass}`}
+                >
                   <SelectValue placeholder="Choose a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -236,6 +244,12 @@ export default function AddBookDialog({
               />
             </div>
           </div>
+
+          {error && (
+            <p role="alert" className="text-sm text-[#f08a8a]">
+              {error}
+            </p>
+          )}
 
           <Button
             type="submit"
