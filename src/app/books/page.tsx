@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { API, getServerToken } from "@/lib/server-api";
 
-// This page reads the user's session, so render it on every request.
+//Got help from AI to use the below line
 export const dynamic = "force-dynamic";
 
 type Book = {
@@ -31,7 +31,7 @@ async function getBooks(): Promise<Book[]> {
 
     const data: unknown = await response.json();
 
-    // Supports either an array response or an object like { books: [...] }.
+
     if (Array.isArray(data)) {
       return data as Book[];
     }
